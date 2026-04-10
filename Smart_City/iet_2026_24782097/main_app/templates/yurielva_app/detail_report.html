@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detail Laporan</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 60%;
+            margin: 40px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .status {
+            padding: 3px 8px;
+            border-radius: 4px;
+            background-color: #ddd;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 12px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Detail Laporan</h2>
+
+    <p><span class="label">Judul:</span> {{ report.title }}</p>
+    <p><span class="label">Kategori:</span> {{ report.category }}</p>
+    <p><span class="label">Deskripsi:</span> {{ report.description }}</p>
+    <p><span class="label">Lokasi:</span> {{ report.location }}</p>
+    <p><span class="label">Status:</span> 
+        <span class="status">{{ report.status }}</span>
+    </p>
+
+    <a href="{% url 'report_list' %}" class="btn">Kembali</a>
+
+</div>
+
+</body>
+</html>

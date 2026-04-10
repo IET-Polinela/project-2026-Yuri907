@@ -16,6 +16,7 @@
         <th>Category</th>
         <th>Description</th>
         <th>Location</th>
+        <th>Status</th>
         <th>Aksi</th>
     </tr>
 
@@ -25,9 +26,39 @@
         <td>{{ report.category }}</td>
         <td>{{ report.description }}</td>
         <td>{{ report.location }}</td>
+        <td>{{ report.status }}</td>
+
         <td>
-            <a href="{% url 'edit_report' report.id %}">Edit</a> |
-            <a href="{% url 'delete_report' report.id %}">Delete</a>
+            {% if report.status == "REPORTED" %}
+                <form action="{% url 'update_status' report.pk %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="status" value="VERIFIED">
+                    <button type="submit">Verifikasi</button>
+                </form>
+
+            {% elif report.status == "VERIFIED" %}
+                <form action="{% url 'update_status' report.pk %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="status" value="IN_PROGRESS">
+                    <button type="submit">Proses</button>
+                </form>
+
+            {% elif report.status == "IN_PROGRESS" %}
+                <form action="{% url 'update_status' report.pk %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="status" value="RESOLVED">
+                    <button type="submit">Selesai</button>
+                </form>
+
+            {% else %}
+                ✅ Selesai
+            {% endif %}
+
+            <br><br>
+
+            <!-- CRUD -->
+            <a href="{% url 'update_report' report.pk %}">Edit</a> |
+            <a href="{% url 'delete_report' report.pk %}">Delete</a>
         </td>
     </tr>
     {% endfor %}
