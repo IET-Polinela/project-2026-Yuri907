@@ -1,171 +1,69 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Contact Liwa</title>
+{% extends 'base.html' %}
 
-<style>
+{% block title %}Contact Liwa{% endblock %}
 
-body{
-    font-family: Arial;
-    background-color:#eaf4ff;
-    margin:0;
-    text-align:center;
+{% block content %}
 
-    /* AGAR FOOTER SELALU DI BAWAH */
-    display:flex;
-    flex-direction:column;
-    min-height:100vh;
-}
+<div class="row justify-content-center">
+    <div class="col-md-8">
 
-/* HEADER */
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">Contact Kota Liwa</h2>
+            <p class="text-muted">Kabupaten Lampung Barat</p>
+        </div>
 
-header{
-    background:#4da6ff;
-    color:white;
-    padding:18px;
-}
+        <div class="card shadow-sm">
+            <div class="card-body">
 
-/* NAVBAR */
+                <p class="text-muted">
+                Jika Anda ingin mengetahui lebih banyak informasi mengenai Kota Liwa dan Kabupaten Lampung Barat, Anda dapat menghubungi layanan berikut:
+                </p>
 
-nav{
-    background:#b3daff;
-    padding:10px;
-}
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered">
 
-nav a{
-    text-decoration:none;
-    color:#003366;
-    font-weight:bold;
-    border:2px solid #4da6ff;
-    padding:8px 18px;
-    margin:5px;
-    display:inline-block;
-    border-radius:8px;
-    background:white;
-}
+                        <tr>
+                            <th>Alamat</th>
+                            <td>Liwa, Kabupaten Lampung Barat, Provinsi Lampung, Indonesia</td>
+                        </tr>
 
-nav a:hover{
-    background:#4da6ff;
-    color:white;
-}
+                        <tr>
+                            <th>Telepon</th>
+                            <td>(0728) 123456</td>
+                        </tr>
 
-/* CONTENT */
+                        <tr>
+                            <th>Email</th>
+                            <td>info@liwa-lampungbarat.id</td>
+                        </tr>
 
-.container{
-    padding:40px 20px;
-    flex:1; /* agar konten mengisi ruang */
-}
+                        <tr>
+                            <th>Instagram</th>
+                            <td>@lampungbarat</td>
+                        </tr>
 
-.card{
-    background:white;
-    width:55%;
-    margin:auto;
-    padding:25px;
-    border-radius:10px;
-    box-shadow:0px 0px 10px rgba(0,0,0,0.1);
-}
+                        <tr>
+                            <th>Facebook</th>
+                            <td>Pemerintah Kabupaten Lampung Barat</td>
+                        </tr>
 
-/* TABLE */
+                    </table>
+                </div>
 
-table{
-    margin:auto;
-    text-align:left;
-}
+                <p class="text-muted">
+                Kontak ini dapat digunakan untuk mendapatkan informasi mengenai wisata, layanan masyarakat, serta kegiatan di Kota Liwa.
+                </p>
 
-td{
-    padding:8px;
-}
+                <hr>
 
-/* PARAGRAF */
+                <p class="fw-bold text-primary text-center mb-0">
+                    Dibuat oleh : Yuri Elva
+                </p>
 
-.card p{
-    line-height:1.6;
-}
+            </div>
+        </div>
 
-/* CREDIT */
-
-.credit{
-    margin-top:20px;
-    font-weight:bold;
-    color:#003366;
-}
-
-/* FOOTER */
-
-footer{
-    margin-top:40px;
-    background:#4da6ff;
-    color:white;
-    padding:12px;
-}
-
-</style>
-</head>
-
-<body>
-
-<header>
-<h1>Contact di Liwa</h1>
-</header>
-
-<nav>
-<a href="/">Home</a>
-<a href="/about/">About</a>
-<a href="/contacts/">Contacts</a>
-</nav>
-
-<div class="container">
-
-<div class="card">
-
-<p>
-Jika Anda ingin mengetahui lebih banyak informasi mengenai Kota Liwa dan Kabupaten Lampung Barat, Anda dapat menghubungi beberapa instansi atau layanan berikut:
-</p>
-
-<table>
-
-<tr>
-<td><b>Alamat</b></td>
-<td>: Liwa, Kabupaten Lampung Barat, Provinsi Lampung, Indonesia</td>
-</tr>
-
-<tr>
-<td><b>Telepon</b></td>
-<td>: (0728) 123456</td>
-</tr>
-
-<tr>
-<td><b>Email</b></td>
-<td>: info@liwa-lampungbarat.id</td>
-</tr>
-
-<tr>
-<td><b>Instagram</b></td>
-<td>: @lampungbarat</td>
-</tr>
-
-<tr>
-<td><b>Facebook</b></td>
-<td>: Pemerintah Kabupaten Lampung Barat</td>
-</tr>
-
-</table>
-
-<p>
-Kontak ini dapat digunakan untuk mendapatkan informasi mengenai wisata, layanan masyarakat, serta kegiatan yang ada di Kota Liwa.
-</p>
-
-<div class="credit">
-Dibuat oleh : Yuri Elva
+    </div>
 </div>
 
-</div>
-
-</div>
-
-<footer>
-Pemerintah Kabupaten Lampung Barat
-</footer>
-
-</body>
-</html>
+{% endblock %}

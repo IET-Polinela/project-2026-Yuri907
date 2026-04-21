@@ -1,24 +1,99 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Laporan</title>
-</head>
+{% extends 'base.html' %}
 
-<body>
+{% block title %}Edit Laporan{% endblock %}
 
-<h1>Edit Laporan</h1>
+{% block content %}
 
-<form method="POST">
-    {% csrf_token %}
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'report_list' %}">Laporan</a>
+        </li>
+        <li class="breadcrumb-item active">
+            Edit
+        </li>
+    </ol>
+</nav>
 
-    {{ form.as_p }}
+<div class="row justify-content-center">
+    <div class="col-md-8">
 
-    <button type="submit">Update</button>
-</form>
+        <div class="card shadow-sm">
+            <div class="card-body">
 
-<br>
+                <h3 class="mb-4 text-center">
+                    <i class="bi bi-pencil-square"></i> Edit Laporan
+                </h3>
 
-<a href="{% url 'home' %}">Kembali ke Home</a>
+                <form method="POST" novalidate>
+                    {% csrf_token %}
 
-</body>
-</html>
+                    <!-- ERROR GLOBAL -->
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            Mohon periksa kembali input Anda
+                        </div>
+                    {% endif %}
+
+                    <!-- Judul -->
+                    <div class="mb-3">
+                        <label class="form-label">Judul</label>
+                        {{ form.title }}
+                        {{ form.title.errors }}
+                    </div>
+
+                    <!-- Kategori -->
+                    <div class="mb-3">
+                        <label class="form-label">Kategori</label>
+                        {{ form.category }}
+                        {{ form.category.errors }}
+                    </div>
+
+                    <!-- Deskripsi -->
+                    <div class="mb-3">
+                        <label class="form-label">Deskripsi</label>
+                        {{ form.description }}
+                        {{ form.description.errors }}
+                    </div>
+
+                    <!-- Lokasi -->
+                    <div class="mb-3">
+                        <label class="form-label">Lokasi</label>
+                        {{ form.location }}
+                        {{ form.location.errors }}
+                    </div>
+
+                    <!-- BUTTON -->
+                    <div class="d-flex justify-content-between">
+
+                        <a href="{% url 'report_list' %}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Kembali
+                        </a>
+
+                        <button type="submit" id="submitBtn" class="btn btn-warning">
+                            Update
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+document.querySelector("form").addEventListener("submit", function() {
+    const btn = document.getElementById("submitBtn");
+
+    btn.innerHTML = "<span class='spinner-border spinner-border-sm'></span> Loading...";
+    btn.disabled = true;
+});
+</script>
+
+{% endblock %}

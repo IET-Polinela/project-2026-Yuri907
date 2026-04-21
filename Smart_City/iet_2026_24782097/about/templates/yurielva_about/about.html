@@ -1,143 +1,46 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Tentang Kota Liwa</title>
+{% extends 'base.html' %}
 
-<style>
+{% block title %}Tentang Kota Liwa{% endblock %}
 
-body{
-    font-family: Arial;
-    background-color:#eaf4ff;
-    margin:0;
-    text-align:center;
+{% block content %}
 
-    /* AGAR FOOTER TIDAK NAIK KE ATAS */
-    display:flex;
-    flex-direction:column;
-    min-height:100vh;
-}
+<div class="row justify-content-center">
+    <div class="col-md-8">
 
-/* HEADER */
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">Tentang Kota Liwa</h2>
+            <p class="text-muted">Kabupaten Lampung Barat</p>
+        </div>
 
-header{
-    background:#4da6ff;
-    color:white;
-    padding:18px;
-}
+        <div class="card shadow-sm">
+            <div class="card-body">
 
-header h1{
-    margin:5px;
-}
+                <p class="text-muted">
+                Liwa merupakan ibu kota dari Kabupaten Lampung Barat. Kota ini terletak di wilayah pegunungan Bukit Barisan sehingga memiliki udara yang sejuk dan pemandangan alam yang indah.
+                </p>
 
-/* NAVBAR */
+                <p class="text-muted">
+                Liwa dikenal dengan keindahan alamnya seperti Danau Ranau, perbukitan hijau, serta perkebunan kopi yang luas. Selain itu, masyarakat Liwa masih menjaga tradisi dan budaya lokal yang diwariskan secara turun-temurun.
+                </p>
 
-nav{
-    background:#b3daff;
-    padding:10px;
-}
+                <p class="text-muted">
+                Kota Liwa juga menjadi pusat pemerintahan, pendidikan, dan aktivitas ekonomi di Lampung Barat.
+                </p>
 
-nav a{
-    text-decoration:none;
-    color:#003366;
-    font-weight:bold;
-    border:2px solid #4da6ff;
-    padding:8px 18px;
-    margin:5px;
-    display:inline-block;
-    border-radius:8px;
-    background:white;
-}
+                <p class="text-muted">
+                Dengan suasana yang tenang dan lingkungan yang alami, Liwa menjadi tempat yang nyaman untuk dikunjungi maupun ditinggali.
+                </p>
 
-nav a:hover{
-    background:#4da6ff;
-    color:white;
-}
+                <hr>
 
-/* CONTENT */
+                <p class="fw-bold text-primary text-center mb-0">
+                    Dibuat oleh : Yuri Elva
+                </p>
 
-.container{
-    width:70%;
-    margin:auto;
-    padding:40px 20px;
-    flex:1; /* Membuat konten mengisi ruang */
-}
+            </div>
+        </div>
 
-.card{
-    background:white;
-    padding:25px;
-    border-radius:10px;
-    box-shadow:0px 0px 10px rgba(0,0,0,0.1);
-}
-
-.card p{
-    margin:12px 0;
-    line-height:1.7;
-    text-align:center;
-}
-
-/* CREDIT */
-
-.credit{
-    margin-top:20px;
-    font-weight:bold;
-    color:#003366;
-}
-
-/* FOOTER */
-
-footer{
-    margin-top:60px;
-    background:#4da6ff;
-    color:white;
-    padding:15px;
-}
-
-</style>
-</head>
-
-<body>
-
-<header>
-<h1>Tentang Kota Liwa</h1>
-</header>
-
-<nav>
-<a href="/">Home</a>
-<a href="/about/">About</a>
-<a href="/contacts/">Contacts</a>
-</nav>
-
-<div class="container">
-
-<div class="card">
-
-<p>
-Liwa merupakan ibu kota dari Kabupaten Lampung Barat. Kota ini terletak di wilayah pegunungan Bukit Barisan sehingga memiliki udara yang sejuk dan pemandangan alam yang indah.
-</p>
-
-<p>
-Liwa dikenal dengan keindahan alamnya seperti Danau Ranau, perbukitan hijau, serta perkebunan kopi yang luas. Selain itu, masyarakat Liwa masih menjaga tradisi dan budaya lokal yang diwariskan secara turun-temurun.
-</p>
-
-<p>
-Kota Liwa juga menjadi pusat pemerintahan, pendidikan, dan aktivitas ekonomi di Lampung Barat.
-</p>
-
-<p>
-Dengan suasana yang tenang dan lingkungan yang alami, Liwa menjadi tempat yang nyaman untuk dikunjungi maupun ditinggali.
-</p>
-
-<div class="credit">
-Dibuat oleh : Yuri Elva
+    </div>
 </div>
 
-</div>
-
-</div>
-
-<footer>
-Kabupaten Lampung Barat
-</footer>
-
-</body>
-</html>
+{% endblock %}

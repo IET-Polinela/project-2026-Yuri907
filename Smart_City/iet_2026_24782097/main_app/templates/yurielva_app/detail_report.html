@@ -1,73 +1,112 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Detail Laporan</title>
+{% extends 'base.html' %}
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-        }
+{% block title %}Detail Laporan{% endblock %}
 
-        .container {
-            width: 60%;
-            margin: 40px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-        }
+{% block content %}
 
-        h2 {
-            text-align: center;
-        }
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'report_list' %}">Laporan</a>
+        </li>
+        <li class="breadcrumb-item active">
+            Detail
+        </li>
+    </ol>
+</nav>
 
-        p {
-            margin: 10px 0;
-        }
+<div class="row justify-content-center">
+    <div class="col-md-8">
 
-        .label {
-            font-weight: bold;
-        }
+        <div class="card shadow-sm">
+            <div class="card-body">
 
-        .status {
-            padding: 3px 8px;
-            border-radius: 4px;
-            background-color: #ddd;
-        }
+                <h3 class="mb-4 text-center">
+                    <i class="bi bi-file-text"></i> Detail Laporan
+                </h3>
 
-        .btn {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 8px 12px;
-            background-color: #3498db;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
+                <hr>
 
-        .btn:hover {
-            background-color: #2980b9;
-        }
-    </style>
-</head>
+                <p><strong>Judul:</strong> {{ report.title }}</p>
+                <p><strong>Kategori:</strong> {{ report.category }}</p>
+                <p><strong>Deskripsi:</strong> {{ report.description }}</p>
+                <p><strong>Lokasi:</strong> {{ report.location }}</p>
 
-<body>
+                <p>
+                    <strong>Status:</strong>
+                    {% if report.status == "REPORTED" %}
+                        <span class="badge bg-secondary">Reported</span>
+                    {% elif report.status == "VERIFIED" %}
+                        <span class="badge bg-info text-dark">Verified</span>
+                    {% elif report.status == "IN_PROGRESS" %}
+                        <span class="badge bg-warning text-dark">In Progress</span>
+                    {% elif report.status == "RESOLVED" %}
+                        <span class="badge bg-success">Resolved</span>
+                    {% endif %}
+                </p>
 
-<div class="container">
+                <hr>
 
-    <h2>Detail Laporan</h2>
+                <!-- WORKFLOW BUTTON -->
+                <h5 class="mb-3">Update Status</h5>
 
-    <p><span class="label">Judul:</span> {{ report.title }}</p>
-    <p><span class="label">Kategori:</span> {{ report.category }}</p>
-    <p><span class="label">Deskripsi:</span> {{ report.description }}</p>
-    <p><span class="label">Lokasi:</span> {{ report.location }}</p>
-    <p><span class="label">Status:</span> 
-        <span class="status">{{ report.status }}</span>
-    </p>
+                <div class="d-flex gap-2 flex-wrap">
 
-    <a href="{% url 'report_list' %}" class="btn">Kembali</a>
+                    {% if report.status == "REPORTED" %}
+                    <form method="post" action="{% url 'update_status' report.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="status" value="VERIFIED">
+                        <button class="btn btn-info">Verifikasi</button>
+                    </form>
+                    {% endif %}
 
+                    {% if report.status == "VERIFIED" %}
+                    <form method="post" action="{% url 'update_status' report.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="status" value="IN_PROGRESS">
+                        <button class="btn btn-warning">Proses</button>
+                    </form>
+                    {% endif %}
+
+                    {% if report.status == "IN_PROGRESS" %}
+                    <form method="post" action="{% url 'update_status' report.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="status" value="RESOLVED">
+                        <button class="btn btn-success">Selesai</button>
+                    </form>
+                    {% endif %}
+
+                </div>
+
+                <hr>
+
+                <!-- NAVIGATION -->
+                <div class="d-flex justify-content-between mt-3">
+
+                    <a href="{% url 'home' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Kembali
+                    </a>
+
+                    <div>
+                        <a href="{% url 'update_report' report.pk %}" class="btn btn-warning">
+                            Edit
+                        </a>
+                        <a href="{% url 'delete_report' report.pk %}" 
+                           class="btn btn-danger"
+                           onclick="return confirm('Yakin ingin menghapus?')">
+                           Delete
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 </div>
 
-</body>
-</html>
+{% endblock %}

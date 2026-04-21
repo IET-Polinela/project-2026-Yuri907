@@ -4,6 +4,8 @@ from django.views import View
 from django.urls import reverse_lazy
 from .models import Report
 from .forms import ReportForm
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 def home(request):
@@ -23,24 +25,36 @@ class ReportDetailView(DetailView):
     context_object_name = 'report'
 
 
-class ReportCreateView(CreateView):
+class ReportCreateView(SuccessMessageMixin, CreateView):
     model = Report
     form_class = ReportForm
     template_name = 'yurielva_app/add_report.html'
     success_url = reverse_lazy('report_list')
 
+    def form_valid(self, form):
+        messages.success(self.request, "Laporan berhasil ditambahkan")
+        return super().form_valid(form)
 
-class ReportUpdateView(UpdateView):
+
+class ReportUpdateView(SuccessMessageMixin, UpdateView):
     model = Report
     form_class = ReportForm
     template_name = 'yurielva_app/update_report.html'
     success_url = reverse_lazy('report_list')
+
+    def form_valid(self, form):
+        messages.info(self.request, "Laporan berhasil diperbarui")
+        return super().form_valid(form)
 
 
 class ReportDeleteView(DeleteView):
     model = Report
     template_name = 'yurielva_app/delete_report.html'
     success_url = reverse_lazy('report_list')
+
+    def post(self, request, *args, **kwargs):
+        messages.error(self.request, "Laporan berhasil dihapus")
+        return super().post(request, *args, **kwargs)
 
 
 class ReportUpdateStatusView(View):
@@ -49,4 +63,7 @@ class ReportUpdateStatusView(View):
         new_status = request.POST.get('status')
         report.status = new_status
         report.save()
+
+        messages.warning(request, "Status laporan berhasil diperbarui")
+
         return redirect('report_list')
