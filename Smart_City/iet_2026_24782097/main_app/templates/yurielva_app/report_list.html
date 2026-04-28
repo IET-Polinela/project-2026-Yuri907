@@ -80,30 +80,33 @@
 
                                 {% if report.status == "REPORTED" %}
                                 <form method="post" action="{% url 'update_status' report.pk %}"
+                                      class="status-form"
                                       onsubmit="return confirm('Ubah status menjadi VERIFIED?')">
                                     {% csrf_token %}
                                     <input type="hidden" name="status" value="VERIFIED">
-                                    <button class="btn btn-outline-info btn-sm w-100">
+                                    <button type="submit" class="btn btn-outline-info btn-sm w-100 statusBtn">
                                         Verifikasi
                                     </button>
                                 </form>
 
                                 {% elif report.status == "VERIFIED" %}
                                 <form method="post" action="{% url 'update_status' report.pk %}"
+                                      class="status-form"
                                       onsubmit="return confirm('Ubah status menjadi IN PROGRESS?')">
                                     {% csrf_token %}
                                     <input type="hidden" name="status" value="IN_PROGRESS">
-                                    <button class="btn btn-outline-warning btn-sm w-100">
+                                    <button type="submit" class="btn btn-outline-warning btn-sm w-100 statusBtn">
                                         Proses
                                     </button>
                                 </form>
 
                                 {% elif report.status == "IN_PROGRESS" %}
                                 <form method="post" action="{% url 'update_status' report.pk %}"
+                                      class="status-form"
                                       onsubmit="return confirm('Ubah status menjadi RESOLVED?')">
                                     {% csrf_token %}
                                     <input type="hidden" name="status" value="RESOLVED">
-                                    <button class="btn btn-outline-success btn-sm w-100">
+                                    <button type="submit" class="btn btn-outline-success btn-sm w-100 statusBtn">
                                         Selesai
                                     </button>
                                 </form>
@@ -169,5 +172,18 @@
     </div>
 
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('.status-form').forEach(function (form) {
+        form.addEventListener('submit', function () {
+            const btn = form.querySelector('.statusBtn');
+            if (!btn) return;
+            btn.innerHTML = "<span class='spinner-border spinner-border-sm me-2'></span>Loading...";
+            btn.disabled = true;
+        });
+    });
+});
+</script>
 
 {% endblock %}

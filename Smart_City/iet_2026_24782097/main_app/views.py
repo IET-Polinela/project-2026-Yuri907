@@ -8,6 +8,18 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 
 
+# TAMBAHAN: HARUS DITARUH DI ATAS SEBELUM DIPAKAI
+class AdminRequiredMixin:
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.user.is_admin:
+            messages.error(
+                request,
+                'Akses dibatasi. Fitur ini hanya dapat digunakan oleh admin.'
+            )
+            return redirect('report_list')
+        return super().dispatch(request, *args, **kwargs)
+
+
 def home(request):
     reports = Report.objects.all()
     return render(request, 'yurielva_app/home.html', {'reports': reports})
@@ -25,7 +37,7 @@ class ReportDetailView(DetailView):
     context_object_name = 'report'
 
 
-class ReportCreateView(SuccessMessageMixin, CreateView):
+class ReportCreateView(AdminRequiredMixin, CreateView):
     model = Report
     form_class = ReportForm
     template_name = 'yurielva_app/add_report.html'
@@ -36,7 +48,7 @@ class ReportCreateView(SuccessMessageMixin, CreateView):
         return super().form_valid(form)
 
 
-class ReportUpdateView(SuccessMessageMixin, UpdateView):
+class ReportUpdateView(AdminRequiredMixin, UpdateView):
     model = Report
     form_class = ReportForm
     template_name = 'yurielva_app/update_report.html'
@@ -47,7 +59,8 @@ class ReportUpdateView(SuccessMessageMixin, UpdateView):
         return super().form_valid(form)
 
 
-class ReportDeleteView(DeleteView):
+# TAMBAHAN: DELETE JUGA DIPROTEKSI ADMIN
+class ReportDeleteView(AdminRequiredMixin, DeleteView):
     model = Report
     template_name = 'yurielva_app/delete_report.html'
     success_url = reverse_lazy('report_list')
@@ -57,7 +70,8 @@ class ReportDeleteView(DeleteView):
         return super().post(request, *args, **kwargs)
 
 
-class ReportUpdateStatusView(View):
+# TAMBAHAN: STATUS JUGA HANYA ADMIN
+class ReportUpdateStatusView(AdminRequiredMixin, View):
     def post(self, request, pk):
         report = get_object_or_404(Report, pk=pk)
         new_status = request.POST.get('status')
@@ -65,5 +79,4 @@ class ReportUpdateStatusView(View):
         report.save()
 
         messages.warning(request, "Status laporan berhasil diperbarui")
-
         return redirect('report_list')

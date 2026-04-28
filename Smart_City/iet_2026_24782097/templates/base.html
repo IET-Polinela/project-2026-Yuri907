@@ -52,7 +52,6 @@
             letter-spacing: 0.5px;
         }
 
-        
         /* TABLE GARIS */
         .table {
             border: 1px solid #dbe5f1;
@@ -133,6 +132,36 @@
             border-radius: 6px;
         }
 
+        /* TAMBAHAN UX FEEDBACK */
+        .alert {
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background-color: #d1e7dd;
+            border: 1px solid #badbcc;
+            color: #0f5132;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border: 1px solid #f5c2c7;
+            color: #842029;
+        }
+
+        .alert-info {
+            background-color: #cff4fc;
+            border: 1px solid #b6effb;
+            color: #055160;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffecb5;
+            color: #664d03;
+        }
+
     </style>
 </head>
 
@@ -169,25 +198,65 @@
                     <a class="nav-link" href="/contacts/">Contact</a>
                 </li>
 
+                <!-- LOGIN / LOGOUT -->
+                {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle fs-5 me-2"></i>
+                            {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li class="px-3 py-2">
+                                <strong>{{ user.username }}</strong><br>
+                                {% if user.is_admin %}
+                                    <span class="badge bg-warning text-dark">Admin</span>
+                                {% else %}
+                                    <span class="badge bg-success">Citizen</span>
+                                {% endif %}
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{% url 'logout' %}" method="post" class="px-3 py-2 m-0">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-danger w-100">
+                                        Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="{% url 'login' %}">
+                            Login
+                        </a>
+                    </li>
+                {% endif %}
+
             </ul>
         </div>
     </div>
 </nav>
 
+<!-- MESSAGE -->
 <div class="container mt-3">
     {% if messages %}
         {% for message in messages %}
-            <div class="alert 
+            <div class="alert
                 {% if message.tags == 'error' %}
                     alert-danger
                 {% else %}
                     alert-{{ message.tags }}
                 {% endif %}
-                alert-dismissible fade show shadow-sm" role="alert">
+                alert-dismissible fade show shadow-sm"
+                role="alert">
 
-                {{ message }}
+                <i class="bi bi-bell-fill me-2"></i>{{ message }}
 
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+                </button>
             </div>
         {% endfor %}
     {% endif %}

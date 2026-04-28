@@ -28,7 +28,7 @@
                     Tambah Laporan
                 </h3>
 
-                <form method="POST">
+                <form method="POST" id="reportForm">
                     {% csrf_token %}
 
                     <!-- Judul -->
@@ -75,11 +75,15 @@
 </div>
 
 <script>
-document.querySelector("form").addEventListener("submit", function() {
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("reportForm");
     const btn = document.getElementById("submitBtn");
 
-    btn.innerHTML = "<span class='spinner-border spinner-border-sm'></span> Loading...";
-    btn.disabled = true;
+    form.addEventListener("submit", function () {
+        btn.innerHTML =
+            "<span class='spinner-border spinner-border-sm me-2'></span>Loading...";
+        btn.disabled = true;
+    });
 });
 </script>
 

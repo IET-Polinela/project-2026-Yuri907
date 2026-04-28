@@ -6,9 +6,10 @@ def welcome(request):
     return HttpResponse("Selamat Datang Yuri Elva")
 
 urlpatterns = [
-    path('', include('main_app.urls')),   # Home
+    path('', include('main_app.urls')),
     path('about/', include('about.urls')), 
     path('contacts/', include('contacts.urls')),
+    path('', include('usermanagement_24782097.urls')), 
     path('welcome/', welcome),
     path('admin/', admin.site.urls),
 ]
