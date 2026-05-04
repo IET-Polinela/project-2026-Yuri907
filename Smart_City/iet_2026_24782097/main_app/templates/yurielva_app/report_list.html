@@ -28,13 +28,37 @@
         </a>
     </div>
 
+    <!-- TAMBAHAN LAB 5 - ENHANCED LIVE SEARCH -->
+    <div class="mb-4">
+        <div class="input-group">
+            <span class="input-group-text bg-light border-end-0">
+                <i class="fas fa-search text-muted"></i>
+            </span>
+            <input type="text"
+                   id="searchInput"
+                   class="form-control border-start-0 ps-0"
+                   placeholder="Cari berdasarkan judul, lokasi, atau status...">
+            <button class="btn btn-outline-secondary d-none"
+                    type="button"
+                    id="clearSearch"
+                    title="Clear search">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mt-2">
+            <small class="text-muted" id="searchResult">
+                Menampilkan <span id="resultCount">0</span> dari <span id="totalCount">0</span> laporan
+            </small>
+        </div>
+    </div>
+
     <!-- CARD TABLE -->
     <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
 
         <div class="table-responsive">
 
-            <!-- 🔥 HANYA TAMBAH CLASS -->
-            <table class="table table-hover align-middle mb-0 custom-table">
+            <table class="table table-hover align-middle mb-0 custom-table"
+                   id="reportTable">
 
                 <thead class="table-light">
                     <tr class="text-secondary small text-uppercase">
@@ -46,7 +70,6 @@
                 </thead>
 
                 <tbody>
-
                     {% for report in reports %}
                     <tr>
 
@@ -60,16 +83,24 @@
 
                         <td>
                             {% if report.status == "REPORTED" %}
-                               <span class="badge bg-secondary px-3 py-2">Reported</span>
-                            
+                                <span class="badge bg-secondary px-3 py-2">
+                                    Reported
+                                </span>
+
                             {% elif report.status == "VERIFIED" %}
-                               <span class="badge bg-primary px-3 py-2">Verified</span>
-                               
+                                <span class="badge bg-primary px-3 py-2">
+                                    Verified
+                                </span>
+
                             {% elif report.status == "IN_PROGRESS" %}
-                               <span class="badge bg-warning text-dark px-3 py-2">In Progress</span>
+                                <span class="badge bg-warning text-dark px-3 py-2">
+                                    In Progress
+                                </span>
 
                             {% elif report.status == "RESOLVED" %}
-                               <span class="badge bg-success px-3 py-2">Resolved</span>
+                                <span class="badge bg-success px-3 py-2">
+                                    Resolved
+                                </span>
                             {% endif %}
                         </td>
 
@@ -79,38 +110,55 @@
                             <div class="mb-2">
 
                                 {% if report.status == "REPORTED" %}
-                                <form method="post" action="{% url 'update_status' report.pk %}"
+                                <form method="post"
+                                      action="{% url 'update_status' report.pk %}"
                                       class="status-form"
                                       onsubmit="return confirm('Ubah status menjadi VERIFIED?')">
+
                                     {% csrf_token %}
-                                    <input type="hidden" name="status" value="VERIFIED">
-                                    <button type="submit" class="btn btn-outline-info btn-sm w-100 statusBtn">
+                                    <input type="hidden"
+                                           name="status"
+                                           value="VERIFIED">
+
+                                    <button type="submit"
+                                            class="btn btn-outline-info btn-sm w-100 statusBtn">
                                         Verifikasi
                                     </button>
                                 </form>
 
                                 {% elif report.status == "VERIFIED" %}
-                                <form method="post" action="{% url 'update_status' report.pk %}"
+                                <form method="post"
+                                      action="{% url 'update_status' report.pk %}"
                                       class="status-form"
                                       onsubmit="return confirm('Ubah status menjadi IN PROGRESS?')">
+
                                     {% csrf_token %}
-                                    <input type="hidden" name="status" value="IN_PROGRESS">
-                                    <button type="submit" class="btn btn-outline-warning btn-sm w-100 statusBtn">
+                                    <input type="hidden"
+                                           name="status"
+                                           value="IN_PROGRESS">
+
+                                    <button type="submit"
+                                            class="btn btn-outline-warning btn-sm w-100 statusBtn">
                                         Proses
                                     </button>
                                 </form>
 
                                 {% elif report.status == "IN_PROGRESS" %}
-                                <form method="post" action="{% url 'update_status' report.pk %}"
+                                <form method="post"
+                                      action="{% url 'update_status' report.pk %}"
                                       class="status-form"
                                       onsubmit="return confirm('Ubah status menjadi RESOLVED?')">
+
                                     {% csrf_token %}
-                                    <input type="hidden" name="status" value="RESOLVED">
-                                    <button type="submit" class="btn btn-outline-success btn-sm w-100 statusBtn">
+                                    <input type="hidden"
+                                           name="status"
+                                           value="RESOLVED">
+
+                                    <button type="submit"
+                                            class="btn btn-outline-success btn-sm w-100 statusBtn">
                                         Selesai
                                     </button>
                                 </form>
-
                                 {% endif %}
 
                             </div>
@@ -118,17 +166,19 @@
                             <!-- CRUD -->
                             <div class="d-flex justify-content-center gap-1">
 
-                                <a href="{% url 'detail_report' report.pk %}" 
-                                   class="btn btn-sm btn-outline-primary">
+                                <!-- TAMBAHAN LAB 5 -->
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-primary"
+                                        onclick="showDetail('{{ report.pk }}')">
                                     Detail
-                                </a>
+                                </button>
 
-                                <a href="{% url 'update_report' report.pk %}" 
+                                <a href="{% url 'update_report' report.pk %}"
                                    class="btn btn-sm btn-outline-warning">
                                     Edit
                                 </a>
 
-                                <a href="{% url 'delete_report' report.pk %}" 
+                                <a href="{% url 'delete_report' report.pk %}"
                                    class="btn btn-sm btn-outline-danger"
                                    onclick="return confirm('Apakah Anda yakin ingin menghapus laporan ini?')">
                                     Delete
@@ -137,9 +187,9 @@
                             </div>
 
                             {% if report.status == "RESOLVED" %}
-                                <div class="mt-2 text-success small">
-                                    Selesai
-                                </div>
+                            <div class="mt-2 text-success small">
+                                Selesai
+                            </div>
                             {% endif %}
 
                         </td>
@@ -150,20 +200,20 @@
                     <tr>
                         <td colspan="4">
                             <div class="text-center py-5">
-                                
+
                                 <h5 class="text-muted mb-3">
                                     Belum ada laporan
                                 </h5>
 
-                                <a href="{% url 'add_report' %}" class="btn btn-primary">
+                                <a href="{% url 'add_report' %}"
+                                   class="btn btn-primary">
                                     Tambah Laporan
                                 </a>
 
-                         </div>
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}
-
                 </tbody>
 
             </table>
@@ -173,17 +223,354 @@
 
 </div>
 
+<!-- TAMBAHAN LAB 5 - ENHANCED DETAIL MODAL -->
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold" id="detailModalLabel">
+                    <i class="fas fa-info-circle me-2"></i>Detail Laporan
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-4" id="modalBody">
+                <!-- Loading State -->
+                <div class="text-center py-5" id="loadingState">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-muted mb-0">Memuat detail laporan...</p>
+                </div>
+
+                <!-- Error State -->
+                <div class="text-center py-5 d-none" id="errorState">
+                    <i class="fas fa-exclamation-triangle text-danger fs-1 mb-3"></i>
+                    <h6 class="text-danger mb-2">Gagal Memuat Data</h6>
+                    <p class="text-muted mb-3" id="errorMessage">Terjadi kesalahan saat mengambil data.</p>
+                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="retryLoad()">
+                        <i class="fas fa-redo me-1"></i>Coba Lagi
+                    </button>
+                </div>
+
+                <!-- Content State -->
+                <div class="d-none" id="contentState">
+                    <div class="row gy-3">
+                        <div class="col-lg-8">
+                            <div class="card border-0 bg-light mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-title text-primary mb-4">
+                                        <i class="fas fa-file-alt me-2"></i>Informasi Laporan
+                                    </h6>
+                                    <dl class="row mb-0">
+                                        <dt class="col-sm-4 text-muted small">Judul</dt>
+                                        <dd class="col-sm-8 fw-semibold" id="detail-title"></dd>
+
+                                        <dt class="col-sm-4 text-muted small">Kategori</dt>
+                                        <dd class="col-sm-8 mb-3">
+                                            <span id="detail-category" class="badge bg-secondary"></span>
+                                        </dd>
+
+                                        <dt class="col-sm-4 text-muted small">Deskripsi</dt>
+                                        <dd class="col-sm-8 mb-3">
+                                            <p id="detail-description" class="mb-0"></p>
+                                        </dd>
+
+                                        <dt class="col-sm-4 text-muted small">Lokasi</dt>
+                                        <dd class="col-sm-8 mb-3">
+                                            <div id="detail-location" class="mb-0 text-break"></div>
+                                        </dd>
+
+                                        <dt class="col-sm-4 text-muted small">Status</dt>
+                                        <dd class="col-sm-8 mb-0">
+                                            <span id="detail-status" class="badge"></span>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card border-0 bg-light h-100">
+                                <div class="card-body text-center d-flex flex-column justify-content-between">
+                                    <div>
+                                        <div class="mb-3">
+                                            <i class="fas fa-chart-line text-primary fs-1"></i>
+                                        </div>
+                                        <h6 class="card-title text-primary mb-3">Status Progress</h6>
+                                        <div id="statusProgress" class="mt-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Tutup
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll('.status-form').forEach(function (form) {
-        form.addEventListener('submit', function () {
-            const btn = form.querySelector('.statusBtn');
-            if (!btn) return;
-            btn.innerHTML = "<span class='spinner-border spinner-border-sm me-2'></span>Loading...";
+
+    // KODE ASLI - Status Form Handling
+    document.querySelectorAll(".status-form").forEach(function (form) {
+        form.addEventListener("submit", function () {
+            const btn = form.querySelector(".statusBtn");
+
+            if (!btn) {
+                return;
+            }
+
+            btn.innerHTML =
+                "<span class='spinner-border spinner-border-sm me-2'></span>Loading...";
             btn.disabled = true;
         });
     });
+
+    // ENHANCED LIVE SEARCH WITH DEBOUNCING + HIGHLIGHTING
+    const searchInput = document.getElementById("searchInput");
+    const clearSearchBtn = document.getElementById("clearSearch");
+    const resultCount = document.getElementById("resultCount");
+    const totalCount = document.getElementById("totalCount");
+    const searchResult = document.getElementById("searchResult");
+    const tableRows = Array.from(document.querySelectorAll("#reportTable tbody tr"));
+    let currentSearchTerm = "";
+    
+    // Cache original HTML content
+    const originalRowHtml = tableRows.map(row => {
+        return Array.from(row.querySelectorAll("td")).map(td => td.innerHTML);
+    });
+    
+    // Cache text content for faster searching
+    const cachedRowText = tableRows.map(row => {
+        return Array.from(row.querySelectorAll("td"))
+            .slice(0, -1)
+            .map(td => td.textContent.toLowerCase())
+            .join(" ");
+    });
+    
+    // Debounce timer
+    let debounceTimer = null;
+    const DEBOUNCE_DELAY = 300; // 300ms delay untuk performa optimal
+
+    // Initialize total count
+    totalCount.textContent = tableRows.length;
+
+    function escapeRegExp(value) {
+        return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    // Function to highlight search terms in a row
+    function highlightSearchTerms(row, searchTerm, rowIndex) {
+        const regex = new RegExp(escapeRegExp(searchTerm), 'gi');
+        const cells = Array.from(row.querySelectorAll("td"));
+        
+        cells.forEach(function (cell, index) {
+            if (index < cells.length - 1) {
+                const originalHtml = originalRowHtml[rowIndex][index];
+                cell.innerHTML = originalHtml.replace(regex, match => 
+                    `<mark class="bg-warning text-dark fw-bold">${match}</mark>`
+                );
+            }
+        });
+    }
+
+    // Optimized search function dengan highlighting
+    function performSearch(searchTerm) {
+        currentSearchTerm = searchTerm.toLowerCase();
+        let visibleCount = 0;
+
+        tableRows.forEach(function (row, rowIndex) {
+            const shouldShow = currentSearchTerm === "" || cachedRowText[rowIndex].includes(currentSearchTerm);
+            row.style.display = shouldShow ? "" : "none";
+
+            // Reset HTML to original
+            const cells = Array.from(row.querySelectorAll("td"));
+            cells.forEach(function (cell, cellIndex) {
+                if (cellIndex < cells.length - 1) {
+                    cell.innerHTML = originalRowHtml[rowIndex][cellIndex];
+                }
+            });
+
+            // Highlight jika ada search term dan row ditampilkan
+            if (shouldShow && currentSearchTerm !== "") {
+                highlightSearchTerms(row, currentSearchTerm, rowIndex);
+            }
+
+            if (shouldShow) {
+                visibleCount++;
+            }
+        });
+
+        // Update result counter
+        resultCount.textContent = visibleCount;
+        searchResult.style.display = currentSearchTerm ? "block" : "none";
+
+        // Show/hide clear button
+        if (currentSearchTerm) {
+            clearSearchBtn.classList.remove("d-none");
+        } else {
+            clearSearchBtn.classList.add("d-none");
+        }
+    }
+
+    // Debounced search input handler
+    searchInput.addEventListener("input", function () {
+        const value = this.value;
+        
+        // Clear previous timer
+        if (debounceTimer) {
+            clearTimeout(debounceTimer);
+        }
+        
+        // Set new timer - search akan dijalankan setelah user berhenti mengetik
+        debounceTimer = setTimeout(function () {
+            performSearch(value);
+        }, DEBOUNCE_DELAY);
+    });
+
+    // Clear search button
+    clearSearchBtn.addEventListener("click", function () {
+        searchInput.value = "";
+        if (debounceTimer) {
+            clearTimeout(debounceTimer);
+        }
+        performSearch("");
+        searchInput.focus();
+    });
+
+    // Initial search setup
+    performSearch("");
+
 });
+
+// ENHANCED DETAIL MODAL FUNCTION
+let currentReportId = null;
+
+function showDetail(id) {
+    currentReportId = id;
+
+    // Reset modal states
+    showLoadingState();
+
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById("detailModal"));
+    modal.show();
+
+    // Fetch data
+    loadReportDetail(id);
+}
+
+function loadReportDetail(id) {
+    fetch("/report/json/" + id + "/")
+        .then(function (response) {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(function (data) {
+            displayReportDetail(data);
+        })
+        .catch(function (error) {
+            showErrorState("Gagal mengambil data laporan. Silakan coba lagi.");
+            console.error('Error loading report detail:', error);
+        });
+}
+
+function retryLoad() {
+    if (currentReportId) {
+        showLoadingState();
+        loadReportDetail(currentReportId);
+    }
+}
+
+function showLoadingState() {
+    document.getElementById("loadingState").classList.remove("d-none");
+    document.getElementById("errorState").classList.add("d-none");
+    document.getElementById("contentState").classList.add("d-none");
+}
+
+function showErrorState(message) {
+    document.getElementById("loadingState").classList.add("d-none");
+    document.getElementById("errorState").classList.remove("d-none");
+    document.getElementById("contentState").classList.add("d-none");
+    document.getElementById("errorMessage").textContent = message;
+}
+
+function displayReportDetail(data) {
+    // Hide loading and error states
+    document.getElementById("loadingState").classList.add("d-none");
+    document.getElementById("errorState").classList.add("d-none");
+    document.getElementById("contentState").classList.remove("d-none");
+
+    // Fill in the data
+    document.getElementById("detail-title").textContent = data.title || "N/A";
+    document.getElementById("detail-category").textContent = data.category || "N/A";
+    document.getElementById("detail-description").textContent = data.description || "Tidak ada deskripsi";
+    document.getElementById("detail-location").innerHTML = '<i class="fas fa-map-marker-alt text-danger me-1"></i>' + (data.location || "N/A");
+
+    // Status badge with appropriate color
+    const statusElement = document.getElementById("detail-status");
+    const statusText = data.status || "UNKNOWN";
+    statusElement.textContent = getStatusDisplayText(statusText);
+    statusElement.className = "badge " + getStatusBadgeClass(statusText);
+
+    // Progress visualization
+    const progressContainer = document.getElementById("statusProgress");
+    progressContainer.innerHTML = generateProgressVisualization(statusText);
+}
+
+function getStatusDisplayText(status) {
+    const statusMap = {
+        "REPORTED": "Reported",
+        "VERIFIED": "Verified",
+        "IN_PROGRESS": "In Progress",
+        "RESOLVED": "Resolved"
+    };
+    return statusMap[status] || status;
+}
+
+function getStatusBadgeClass(status) {
+    const badgeMap = {
+        "REPORTED": "bg-secondary",
+        "VERIFIED": "bg-primary",
+        "IN_PROGRESS": "bg-warning text-dark",
+        "RESOLVED": "bg-success"
+    };
+    return badgeMap[status] || "bg-secondary";
+}
+
+function generateProgressVisualization(status) {
+    const steps = ["REPORTED", "VERIFIED", "IN_PROGRESS", "RESOLVED"];
+    const currentIndex = steps.indexOf(status);
+    const progressPercent = currentIndex >= 0 ? ((currentIndex + 1) / steps.length) * 100 : 0;
+
+    return `
+        <div class="progress mb-3" style="height: 8px;">
+            <div class="progress-bar bg-primary" role="progressbar"
+                 style="width: ${progressPercent}%" aria-valuenow="${progressPercent}"
+                 aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="d-flex flex-wrap justify-content-between small text-muted gap-2">
+            <span class="flex-fill text-start">Reported</span>
+            <span class="flex-fill text-center">Verified</span>
+            <span class="flex-fill text-center">In Progress</span>
+            <span class="flex-fill text-end">Resolved</span>
+        </div>
+        <div class="mt-2 text-center">
+            <small class="text-primary fw-semibold">${Math.round(progressPercent)}% Complete</small>
+        </div>
+    `;
+}
 </script>
 
 {% endblock %}

@@ -2,13 +2,13 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views import View
 from django.urls import reverse_lazy
+from django.http import JsonResponse
 from .models import Report
 from .forms import ReportForm
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 
 
-# TAMBAHAN: HARUS DITARUH DI ATAS SEBELUM DIPAKAI
 class AdminRequiredMixin:
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not request.user.is_admin:
@@ -19,6 +19,17 @@ class AdminRequiredMixin:
             return redirect('report_list')
         return super().dispatch(request, *args, **kwargs)
 
+class ReportDetailJsonView(View):
+    def get(self, request, pk):
+        report = get_object_or_404(Report, pk=pk)
+
+        return JsonResponse({
+            'title': report.title,
+            'category': report.category,
+            'description': report.description,
+            'location': report.location,
+            'status': report.status,
+        })
 
 def home(request):
     reports = Report.objects.all()
