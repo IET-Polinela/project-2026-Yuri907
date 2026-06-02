@@ -3,7 +3,7 @@ from django.db.models import Q
 
 from .models import Report
 from .serializers import ReportSerializer
-from .permissions import *
+from .permissions import IsOwnerAndDraftOrReadOnly
 
 
 class ReportViewSet(viewsets.ModelViewSet):
@@ -14,15 +14,15 @@ class ReportViewSet(viewsets.ModelViewSet):
 
         user = self.request.user
 
-        # Admin hanya lihat non-draft
+        if not user.is_authenticated:
+            return Report.objects.none()
+
+        # Admin hanya melihat laporan selain DRAFT
         if user.is_staff:
             return Report.objects.exclude(status='DRAFT')
 
-        # Citizen lihat non-draft + draft sendiri
-        return Report.objects.filter(
-            ~Q(status='DRAFT') |
-            Q(reporter=user)
-        )
+        # Citizen hanya melihat laporan miliknya sendiri
+        return Report.objects.filter(reporter=user)
 
     def get_permissions(self):
 
