@@ -28,7 +28,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './smartcity_citizen_spa_24782097'
+          path: './Smart_City/smartcity_citizen_spa_24782097'
 
       - name: Deploy to GitHub Pages
         id: deployment
