@@ -1,5 +1,5 @@
 """
-ASGI config for iet_2026_24782097 project.
+ASGI config for smartcity_app project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
