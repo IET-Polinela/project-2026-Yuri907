@@ -253,7 +253,7 @@ function renderNavbar() {
     if (brand) {
         brand.innerHTML = `
             <i class="bi bi-buildings-fill me-2"></i>
-            IET City Portal
+            SmartCity Portal
         `;
         brand.className = "navbar-brand fw-bold fs-3 text-white";
         brand.setAttribute("href", "#home");
