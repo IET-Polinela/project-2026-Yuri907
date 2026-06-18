@@ -1,11 +1,11 @@
 from rest_framework import viewsets, permissions
 from rest_framework.pagination import PageNumberPagination
 from django.db.models import Q
+from drf_spectacular.utils import extend_schema
 
 from .models import Report
 from .serializers import ReportSerializer
 from .permissions import IsOwnerAndDraftOrReadOnly
-from drf_spectacular.utils import extend_schema
 
 
 class ReportPagination(PageNumberPagination):
@@ -59,8 +59,12 @@ class ReportViewSet(viewsets.ModelViewSet):
         return [permissions.IsAuthenticated()]
 
     @extend_schema(exclude=True)
-    def destroy(self, request, *args, **kwargs):
-        return super().destroy(request, *args, **kwargs)
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+
+    @extend_schema(exclude=True)
+    def partial_update(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
 
     def perform_create(self, serializer):
 
