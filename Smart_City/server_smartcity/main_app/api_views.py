@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions
 from rest_framework.pagination import PageNumberPagination
 from django.db.models import Q
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, extend_schema_view
 
 from .models import Report
 from .serializers import ReportSerializer
@@ -14,6 +14,10 @@ class ReportPagination(PageNumberPagination):
     max_page_size = 100
 
 
+@extend_schema_view(
+    update=extend_schema(exclude=True),
+    partial_update=extend_schema(exclude=True),
+)
 class ReportViewSet(viewsets.ModelViewSet):
 
     serializer_class = ReportSerializer
@@ -57,14 +61,6 @@ class ReportViewSet(viewsets.ModelViewSet):
             ]
 
         return [permissions.IsAuthenticated()]
-
-    @extend_schema(exclude=True)
-    def update(self, request, *args, **kwargs):
-        return super().update(request, *args, **kwargs)
-
-    @extend_schema(exclude=True)
-    def partial_update(self, request, *args, **kwargs):
-        return super().partial_update(request, *args, **kwargs)
 
     def perform_create(self, serializer):
 
