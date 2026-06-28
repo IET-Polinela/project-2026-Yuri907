@@ -30,7 +30,20 @@
                 Smart City Portal
             </a>
 
-            <div id="nav-menus" class="ms-auto"></div>
+            <!-- Tombol hamburger untuk mobile (UI-06) -->
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarMenus"
+                    aria-controls="navbarMenus"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarMenus">
+                <div id="nav-menus" class="ms-auto"></div>
+            </div>
         </div>
     </nav>
 
@@ -67,11 +80,9 @@
                     <form id="reportForm">
 
                         <div class="mb-3">
-                            <label for="reportTitle"
-                                   class="form-label">
+                            <label for="reportTitle" class="form-label">
                                 Judul Laporan
                             </label>
-
                             <input type="text"
                                    class="form-control"
                                    id="reportTitle"
@@ -80,11 +91,9 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="reportCategory"
-                                   class="form-label">
+                            <label for="reportCategory" class="form-label">
                                 Kategori
                             </label>
-
                             <input type="text"
                                    class="form-control"
                                    id="reportCategory"
@@ -93,11 +102,9 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="reportLocation"
-                                   class="form-label">
+                            <label for="reportLocation" class="form-label">
                                 Lokasi
                             </label>
-
                             <input type="text"
                                    class="form-control"
                                    id="reportLocation"
@@ -106,11 +113,9 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="reportDescription"
-                                   class="form-label">
+                            <label for="reportDescription" class="form-label">
                                 Deskripsi
                             </label>
-
                             <textarea class="form-control"
                                       id="reportDescription"
                                       rows="4"

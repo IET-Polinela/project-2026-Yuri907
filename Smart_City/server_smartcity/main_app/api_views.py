@@ -64,4 +64,20 @@ class ReportViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
 
-        serializer.save(reporter=self.request.user)
+        # Tentukan status laporan sesuai input client.
+        # Default REPORTED jika client tidak mengirim status sama sekali
+        # (sesuai perilaku original sebelum fix ini, lihat test FT-01).
+        # Citizen hanya boleh memilih DRAFT atau REPORTED saat create.
+        requested_status = self.request.data.get("status", "REPORTED")
+
+        if requested_status not in ["DRAFT", "REPORTED"]:
+            requested_status = "REPORTED"
+
+        # Gunakan setattr + save eksplisit (bukan kwarg ke serializer.save())
+        # supaya field 'reporter' (SerializerMethodField, read-only di
+        # serializer) dan 'status' pasti ter-assign dengan benar ke instance
+        # sebelum disimpan ke database.
+        report = serializer.save()
+        report.reporter = self.request.user
+        report.status = requested_status
+        report.save(update_fields=["reporter", "status"])
