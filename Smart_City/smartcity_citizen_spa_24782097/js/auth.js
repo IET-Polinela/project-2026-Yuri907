@@ -81,5 +81,5 @@ function logoutUser() {
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("username");
 
-    window.location.hash = "#home";
+    window.location.hash = "#login";
 }
