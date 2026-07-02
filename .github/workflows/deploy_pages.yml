@@ -10,14 +10,6 @@ permissions:
   pages: write
   id-token: write
 
-# Mencegah 2 proses deploy berjalan bersamaan (penyebab error
-# "Multiple artifacts named github-pages"). Kalau ada push baru
-# sementara deploy sebelumnya masih berjalan, run baru akan
-# menunggu run sebelumnya selesai, bukan jalan barengan.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
   deploy:
     environment:
@@ -32,6 +24,12 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
+
+      - name: Remove old github-pages artifacts        
+        uses: geekyeggo/delete-artifact@v2             
+        with:                                          
+          name: github-pages                           
+          failOnError: false                           
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
