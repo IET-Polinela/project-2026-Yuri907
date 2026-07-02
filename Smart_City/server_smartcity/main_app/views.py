@@ -9,6 +9,7 @@ from .forms import ReportForm
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponseForbidden
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 
 class AdminRequiredMixin:
     def dispatch(self, request, *args, **kwargs):
@@ -114,6 +115,14 @@ class ReportUpdateView(AdminRequiredMixin, UpdateView):
     template_name = 'main_app/update_report.html'
     success_url = reverse_lazy('report_list')
 
+    def get_object(self, queryset=None):
+        # Admin hanya boleh mengubah status laporan (lewat ReportUpdateStatusView),
+        # bukan mengedit seluruh isi laporan secara langsung.
+        raise PermissionDenied(
+            "Admin tidak diizinkan mengedit laporan secara langsung. "
+            "Gunakan fitur Update Status."
+        )
+
     def form_valid(self, form):
         messages.info(
             self.request,
@@ -126,6 +135,12 @@ class ReportDeleteView(AdminRequiredMixin, DeleteView):
     model = Report
     template_name = 'main_app/delete_report.html'
     success_url = reverse_lazy('report_list')
+
+    def get_object(self, queryset=None):
+        # Penghapusan laporan langsung tidak diizinkan untuk admin maupun citizen.
+        raise PermissionDenied(
+            "Laporan tidak dapat dihapus secara langsung."
+        )
 
     def post(self, request, *args, **kwargs):
         messages.error(
