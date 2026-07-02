@@ -10,6 +10,10 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   deploy:
     environment:
@@ -24,12 +28,6 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
-
-      - name: Remove old github-pages artifacts        
-        uses: geekyeggo/delete-artifact@v2             
-        with:                                          
-          name: github-pages                           
-          failOnError: false                           
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
